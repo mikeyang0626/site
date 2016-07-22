@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>Welcome to PCX website.
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="100" header="PCX Solution"
+			resizable="true" closable="true" collapsible="true">
+			<h:outputText value="" />
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="100" header="Footer"
+			resizable="true" closable="true" collapsible="true">
+			<h:outputText value="Design by Mike Yang" />
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="400" header="Form"
+			resizable="true" closable="true" collapsible="true">
+			<h:outputText value="" />
+			<!-- input data form -->
+			<h:form id="inputPickupOrderForm">
+				<p:focus />
+				<p:panelGrid columns="2">
+        	Company Name:
+        	
+        	<p:inputText
+						value="#{pickupOrderServiceController.pickupOrder.companyName}" />
+			Pick up Address: <p:inputText
+						value="#{pickupOrderServiceController.pickupOrder.address}" />
+			Date:
+			<p:calendar
+						value="#{pickupOrderServiceController.pickupOrder.pickupDate}"
+						pattern="MM/dd/yyyy HH:mm" />
+						
+				
+        	Contact E-Mail:
+        	<p:inputText
+						value="#{pickupOrderServiceController.pickupOrder.contactEmail}" />
+			
+
+				</p:panelGrid>
+				<p:commandButton id="btn_reset" value="Reset" type="reset" />
+				<p:commandButton value="Save"
+					action="#{pickupOrderServiceController.reinit}"
+					update="inputPickupOrderForm, :pickupOrderListTable, :message">
+					
+					<p:collector value="#{pickupOrderServiceController.pickupOrder}"
+						addTo="#{pickupOrderServiceController.pickupOrderlist}" />
+
+				</p:commandButton>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="east" size="200" header="News"
+			resizable="true" closable="true" collapsible="true" effect="drop">
+			<h:outputText value="" />
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+
+			<p:growl id="message" />
+
+
+			<!-- Display all order list -->
+			<p:dataTable value="#{pickupOrderServiceController.pickupOrderlist}"
+				id="pickupOrderListTable" var="pickupOrder">
+				<p:column headerText="Order ID">
+        			#{pickupOrder.id}
+      			</p:column>
+				<p:column headerText="Company Name">
+       			 	#{pickupOrder.companyName}
+				</p:column>
+				<p:column headerText="Address">
+					#{pickupOrder.address}
+				</p:column>
+				<p:column headerText="date">
+					#{pickupOrder.pickupDate}
+				</p:column>
+				<p:column headerText="Contac E-Mail">
+        			#{pickupOrder.contactEmail}
+        		</p:column>
+				<p:column headerText="Contact Names">
+					<ui:repeat var="contactN" value="#{pickupOrder.contactName}">
+						<h:outputText value="#{contactN}" />
+					</ui:repeat>
+				</p:column>
+
+				<p:column headerText="Operations">
+					<h:form>
+						<p:commandButton value="edit"
+							action="#{pickupOrderServiceController.setPickupOrder(pickupOrder)}"
+							update=":inputPickupOrderForm" />
+						<p:commandButton value="remove"
+							action="#{pickupOrderServiceController.remove(pickupOrder)}"
+							update=":pickupOrderListTable, :message">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+					</h:form>
+				</p:column>
+
+			</p:dataTable>
+			<h:form>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+					closeOnEscape="true">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:form>
+
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>
