@@ -46,12 +46,10 @@
 				</p:panelGrid>
 				<p:commandButton id="btn_reset" value="Reset" type="reset" />
 				<p:commandButton value="Save"
-					action="#{pickupOrderServiceController.reinit}"
+					action="#{pickupOrderServiceController.addPickupOrder()}"
 					update="inputPickupOrderForm, :pickupOrderListTable, :message">
 					
-					<p:collector value="#{pickupOrderServiceController.pickupOrder}"
-						addTo="#{pickupOrderServiceController.pickupOrderlist}" />
-
+			
 				</p:commandButton>
 			</h:form>
 		</p:layoutUnit>

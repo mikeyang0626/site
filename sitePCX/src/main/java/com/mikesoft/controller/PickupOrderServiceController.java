@@ -52,8 +52,8 @@ public class PickupOrderServiceController implements Serializable{
 
 	@PostConstruct
 	public void loadPikcupOrderlist(){
-		pickupOrderlist = new ArrayList<PickupOrder>();
-		setPickupOrderlist(pickupOrderService.findPickOrderAll());
+		
+		setPickupOrderlist(pickupOrderService.findAll());
 		
 	}
 
@@ -71,16 +71,16 @@ public class PickupOrderServiceController implements Serializable{
 	}
 	
 	//Save order when user clicks save button
-	public void createNew(){
-		pickupOrderService.addPickupOrder(pickupOrder);
-		
-		setPickupOrderlist(pickupOrderService.findPickOrderAll());
+	public void addPickupOrder(){
+		pickupOrderService.save(pickupOrder);
+		reinit();
+		setPickupOrderlist(pickupOrderService.findAll());
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Order Saved!",null)) ;
 	}
 	//remove an order when user clicks remove button
 	public void remove(PickupOrder anOrder){
-		pickupOrderService.deletePickupOrder(anOrder);
-		setPickupOrderlist(pickupOrderService.findPickOrderAll());
+		pickupOrderService.remove(anOrder);
+		setPickupOrderlist(pickupOrderService.findAll());
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Order removed!",null)) ;
 	}
 	public void addContactName(String contactN){
